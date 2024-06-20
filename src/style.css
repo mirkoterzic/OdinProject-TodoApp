@@ -144,7 +144,7 @@ body {
   margin-bottom: 5px;
 }
 
-#todoform input[type="text"],
+#todoform input,
 #todoform textarea,
 #todoform select,
 #todoform button {
