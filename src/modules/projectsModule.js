@@ -6,17 +6,39 @@ import {
   setCurrentProject,
   setProjects,
 } from "./stateModule.js";
+export function initializeProjects() {
+  const storedProjects = localStorage.getItem("projects");
+  if (storedProjects) {
+    projects = JSON.parse(storedProjects);
+  }
+  const storedCurrentProject = localStorage.getItem("currentProject");
+  if (storedCurrentProject && projects[storedCurrentProject]) {
+    currentProject = storedCurrentProject;
+  } else {
+    currentProject = Object.keys(projects)[0] || null;
+  }
+  displayProjects();
+  displayTodos();
+}
+
+export function saveProjects() {
+  localStorage.setItem("projects", JSON.stringify(projects));
+  // currentProject = Object.keys(projects)[0] || null; // Ensure currentProject is the first project or null
+
+  localStorage.setItem("currentProject", currentProject);
+}
 
 export function addProject() {
   const projectNameInput = document.getElementById("projectName");
   const projectName = projectNameInput.value.trim();
   if (projectName && !projects[projectName]) {
     projects[projectName] = [];
+
     setCurrentProject(projectName);
+    saveProjects();
     displayProjects();
     displayTodos();
     projectNameInput.value = "";
-    setProjects(projects);
   }
 }
 
@@ -46,8 +68,8 @@ export function deleteCurrentProject() {
   ) {
     delete projects[currentProject];
     setCurrentProject(null);
+    saveProjects(); // Save projects after deletion
     displayProjects();
     displayTodos();
-    setProjects(projects);
   }
 }

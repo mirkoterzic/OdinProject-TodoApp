@@ -1,6 +1,7 @@
 // Import necessary functions and variables from stateModule.js
 import { projects, currentProject, setProjects } from "./stateModule.js";
 import { changeUrgencyColor } from "./utilsModule.js";
+import { saveProjects } from "./projectsModule.js";
 
 // Class definition for Todo
 export class Todo {
@@ -24,12 +25,12 @@ export function addTodo(e) {
 
   projects[currentProject].push(newTodo);
   createTodoElement(newTodo);
+  saveProjects();
+  // setCurrentProject(currentProject);
 
   const form = document.querySelector("#todoform");
   form.reset();
   changeModalDisplay();
-
-  setProjects(projects);
 }
 
 // Function to create and display a new todo element
@@ -86,7 +87,6 @@ export function displayTodos() {
 
 // Function to toggle modal display
 export function changeModalDisplay() {
-  console.log("change");
   const modal = document.querySelector(".modal-content");
   if (modal) {
     modal.classList.toggle("hidden");
