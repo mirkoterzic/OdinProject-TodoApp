@@ -1,6 +1,5 @@
-// Import necessary functions and variables from stateModule.js
 import { projects, currentProject, setProjects } from "./stateModule.js";
-import { changeUrgencyColor } from "./utilsModule.js";
+import { changeUrgencyColor } from "./uiModule.js";
 import { saveProjects } from "./projectsModule.js";
 
 // Class definition for Todo
@@ -13,7 +12,7 @@ export class Todo {
   }
 }
 
-// Function to handle adding a new todo
+// Add a new todo
 export function addTodo(e) {
   e.preventDefault();
 
@@ -26,14 +25,13 @@ export function addTodo(e) {
   projects[currentProject].push(newTodo);
   createTodoElement(newTodo);
   saveProjects();
-  // setCurrentProject(currentProject);
 
   const form = document.querySelector("#todoform");
   form.reset();
   changeModalDisplay();
 }
 
-// Function to create and display a new todo element
+// Create and display a new todo element
 export function createTodoElement(todo) {
   const content = document.querySelector(".content");
   const todoDiv = document.createElement("div");
@@ -49,7 +47,7 @@ export function createTodoElement(todo) {
   changeUrgencyColor(todoDiv, todo.urgency);
 }
 
-// Function to display all todos for the current project
+// Display all todos for the current project
 export function displayTodos() {
   const content = document.querySelector(".content");
   const modal = document.querySelector(".modal-content");
@@ -65,6 +63,7 @@ export function displayTodos() {
     addTodoBtn.textContent = "Add Todo";
     content.appendChild(addTodoBtn);
   }
+
   // Event listener for Add Todo button
   addTodoBtn.addEventListener("click", () => {
     if (!currentProject) {
@@ -85,7 +84,7 @@ export function displayTodos() {
   }
 }
 
-// Function to toggle modal display
+// Toggle modal display
 export function changeModalDisplay() {
   const modal = document.querySelector(".modal-content");
   if (modal) {

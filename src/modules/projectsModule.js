@@ -1,4 +1,3 @@
-// src/modules/projectsModule.js
 import { displayTodos } from "./todosModule.js";
 import {
   projects,
@@ -6,28 +5,32 @@ import {
   setCurrentProject,
   setProjects,
 } from "./stateModule.js";
+
+// Initialize projects from localStorage and set the current project
 export function initializeProjects() {
   const storedProjects = localStorage.getItem("projects");
   if (storedProjects) {
-    projects = JSON.parse(storedProjects);
+    setProjects(JSON.parse(storedProjects));
   }
+
   const storedCurrentProject = localStorage.getItem("currentProject");
   if (storedCurrentProject && projects[storedCurrentProject]) {
-    currentProject = storedCurrentProject;
+    setCurrentProject(storedCurrentProject);
   } else {
-    currentProject = Object.keys(projects)[0] || null;
+    setCurrentProject(Object.keys(projects)[0] || null);
   }
+
   displayProjects();
   displayTodos();
 }
 
+// Save projects and current project to localStorage
 export function saveProjects() {
   localStorage.setItem("projects", JSON.stringify(projects));
-  // currentProject = Object.keys(projects)[0] || null; // Ensure currentProject is the first project or null
-
   localStorage.setItem("currentProject", currentProject);
 }
 
+// Add a new project
 export function addProject() {
   const projectNameInput = document.getElementById("projectName");
   const projectName = projectNameInput.value.trim();
@@ -42,6 +45,7 @@ export function addProject() {
   }
 }
 
+// Display the list of projects
 export function displayProjects() {
   const projectList = document.querySelector(".projects ul");
   projectList.innerHTML = "";
@@ -56,11 +60,13 @@ export function displayProjects() {
   }
 }
 
+// Select a project and display its todos
 export function selectProject(project) {
   setCurrentProject(project);
   displayTodos();
 }
 
+// Delete the current project
 export function deleteCurrentProject() {
   if (
     currentProject &&
@@ -68,7 +74,7 @@ export function deleteCurrentProject() {
   ) {
     delete projects[currentProject];
     setCurrentProject(null);
-    saveProjects(); // Save projects after deletion
+    saveProjects();
     displayProjects();
     displayTodos();
   }
