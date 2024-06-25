@@ -5,12 +5,27 @@ import {
   setCurrentProject,
   setProjects,
 } from "./stateModule.js";
+import { Todo } from "./todosModule.js";
 
 // Initialize projects from localStorage and set the current project
 export function initializeProjects() {
   const storedProjects = localStorage.getItem("projects");
   if (storedProjects) {
     setProjects(JSON.parse(storedProjects));
+  } else {
+    // Create default project and todo if no projects are stored
+    setProjects({
+      project1: [
+        new Todo(
+          "Sample Todo",
+          "This is a sample todo",
+          "medium",
+          "2024-12-31"
+        ),
+      ],
+    });
+    setCurrentProject("project1");
+    saveProjects(); // Save the default project and todo
   }
 
   const storedCurrentProject = localStorage.getItem("currentProject");
